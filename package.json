@@ -1,0 +1,23 @@
+{
+  "name": "quiz-app",
+  "version": "1.0.0",
+  "description": "The Code Cafe Aarhus Quiz Application",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/morten-kirstein/quiz-app.git"
+  },
+  "keywords": [
+    "quiz",
+    "app"
+  ],
+  "author": "Henrik Madsen & Morten Kirstein",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/morten-kirstein/quiz-app/issues"
+  },
+  "homepage": "https://github.com/morten-kirstein/quiz-app#readme"
+}
