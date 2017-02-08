@@ -14,7 +14,7 @@ function initializeApp() {
         let anwser = confirm('do you want to quiz');
 
         if(anwser){
-            debugger;
+            updateView(quiz[currentQuestion]);
         }else{
             alert('bye bye');
         }
