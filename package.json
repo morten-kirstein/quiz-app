@@ -19,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/morten-kirstein/quiz-app/issues"
   },
-  "homepage": "https://github.com/morten-kirstein/quiz-app#readme"
+  "homepage": "https://github.com/morten-kirstein/quiz-app#readme",
+  "devDependencies": {
+    "http-server": "^0.9.0"
+  }
 }
