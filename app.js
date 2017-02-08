@@ -3,14 +3,23 @@
 var quiz = [ 'quistion1', 'quistion3' , 'quistion3'];
 
 function initializeApp() {
-   var app;
+
+   var app = document.querySelector("#app");
+   var currentQuestion = 0;
 
    addButtonListeners();
+   startApplication();
+
+   function startApplication() {
+        let anwser = confirm('do you want to quiz');
+
+        if(anwser){
+            debugger;
+        }else{
+            alert('bye bye');
+        }
+   }
    
-   var app = document.querySelector("#app");
-   app.innerHTML = "";
-
-
    /**
     * @author HM/MKI
     * @description Adds eventlisteners to prev & next button
@@ -23,12 +32,23 @@ function initializeApp() {
         nextbutton.addEventListener('click', next);
    }
 
+
+   function updateView(viewData) {
+       app.innerHTML = viewData;
+   }
+
+   function showQuizQuestion(questionNr) {
+    return quiz[questionNr];
+   }
+
    /**
     *  @author HM/MKI
     *  @description When user clicks previous button
     */
    function prev() {
-        console.log('prev');
+       debugger;
+       currentQuestion--;
+       showQuizQuestion(currentQuestion);           
    }
 
    /**
@@ -36,7 +56,11 @@ function initializeApp() {
     *  @description When user clicks next button
     */
    function next() {
-        console.log('next');
+
+        currentQuestion++;
+        showQuizQuestion(currentQuestion);
+
+        
    }
 
 
