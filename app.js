@@ -1,5 +1,15 @@
-
-
 function main() {
-    console.log("run form app.js");
+   
+   var app;
+   var app = document.querySelector("#app");
+
+    console.log(app);
+ 
 }
+
+
+
+
+
+
+
