@@ -1,104 +1,65 @@
-//Display welcome message with question about continue
-    //if user clicks ok
-        // initialize new quiz
-    //else
-        //show bye bye message
-
-//initialize new quiz
-    // InitializeCurrentQuestion
-    //Set questions in collection
-
-//display first question in collection
-
-// Click next
-    // Increase currentQuestion by 1
-    // show Question with number currentQuestion
-
-// Click prev
-    // Decrease currentQuestion by 1
-    // show Question with number currentQuestion
-
-   
-var quiz = [ 'quistion1', 'quistion3' , 'quistion3'];
-
 function initializeApp() {
 
-   var app = document.querySelector("#app");
-   var currentQuestion = 0;
+    //Display welcome message with question about continue
+    let wantToPlay = confirm('do you want to quiz');
 
-   //Display welcome message
-        // Do you want to quiz
-            //Start quiz from first Quiestion
-        //Display bye message
+     //if user clicks ok
+    if( wantToPlay ){
+        initNewQuiz();
+    } else {
+        //show bye bye message
+        alert('bye bye');
+    }
 
-    //Go to next question
+    //initialize new quiz
+    function initNewQuiz() {
 
-    //Go to previous question
+        // InitializeCurrentQuestion
+        var currentQuestion = 0;
+        var app = document.querySelector("#app");
+        addButtonListeners();
 
-    //Display showing Question nr out of total questions
-
-
-
-
-   addButtonListeners();
-   startApplication();
-
-   function startApplication() {
-        let anwser = confirm('do you want to quiz');
-
-        if(anwser){
-            updateView(quiz[currentQuestion]);
-        }else{
-            alert('bye bye');
-        }
-   }
-   
-   /**
-    * @author HM/MKI
-    * @description Adds eventlisteners to prev & next button
-    */
-   function addButtonListeners() {
-        var prevbutton = document.querySelector('.prevBtn');
-        var nextbutton = document.querySelector('.nextBtn');
-    
-        prevbutton.addEventListener('click', prev);
-        nextbutton.addEventListener('click', next);
-   }
-
-
-   function updateView(viewData) {
-       app.innerHTML = viewData;
-   }
-
-   function showQuizQuestion(questionNr) {
-    return quiz[questionNr];
-   }
-
-   /**
-    *  @author HM/MKI
-    *  @description When user clicks previous button
-    */
-   function prev() {
-       debugger;
-       currentQuestion--;
-       showQuizQuestion(currentQuestion);           
-   }
-
-   /**
-    *  @author HM/MKI
-    *  @description When user clicks next button
-    */
-   function next() {
-
-        currentQuestion++;
-        showQuizQuestion(currentQuestion);
-
+        //Set questions in collection
+        var quizQuestions = [ 'Question 1', 'Question 2' , 'Question 3'];
         
-   }
+        //display first question in collection
+        var firstQuestion = quizQuestions[0];
+        showQuestion(firstQuestion)
 
+        // Show the question and update UI
+        function showQuestion(questionNr){
+            app.innerHTML = questionNr;
+        }
 
+        // Add event listeners to buttons
+        function addButtonListeners() {
+            var prevbutton = document.querySelector('.prevBtn');
+            var nextbutton = document.querySelector('.nextBtn');
+    
+            prevbutton.addEventListener('click', prevQuestion);
+            nextbutton.addEventListener('click', nextQuestion);
+        }
 
+        // Click prev
+        function prevQuestion() {
+            // Decrease currentQuestion by 1
+            currentQuestion--;
 
+             // show Question with number currentQuestion
+            var question = quizQuestions[currentQuestion];
+            showQuestion(question);
+        }
+
+        // Click next
+        function nextQuestion() {
+            // Increase currentQuestion by 1
+            currentQuestion++;
+
+            var question = quizQuestions[currentQuestion];
+            // show Question with number currentQuestion
+            showQuestion(question);
+        }
+    }
 }
 
 
