@@ -14,13 +14,17 @@ function initializeApp() {
     //initialize new quiz
     function initNewQuiz() {
 
+        //Set questions in collection
+        var quizQuestions = [ 'Question 1', 'Question 2' , 'Question 3'];
+
         // InitializeCurrentQuestion
         var currentQuestion = 0;
+        var totalQuestions = quizQuestions.length;
+
         var app = document.querySelector("#app");
         addButtonListeners();
 
-        //Set questions in collection
-        var quizQuestions = [ 'Question 1', 'Question 2' , 'Question 3'];
+
         
         //display first question in collection
         var firstQuestion = quizQuestions[0];
@@ -53,12 +57,24 @@ function initializeApp() {
         // Click next
         function nextQuestion() {
             // Increase currentQuestion by 1
-            currentQuestion++;
 
-            var question = quizQuestions[currentQuestion];
-            // show Question with number currentQuestion
-            showQuestion(question);
+            if(currentQuestion < (totalQuestions - 1)){
+                currentQuestion++;
+                
+                var question = quizQuestions[currentQuestion];
+                
+                // show Question with number currentQuestion
+                showQuestion(question);
+            } else {
+                quizEnded();
+            }
         }
+
+        function quizEnded() {
+            alert('your quiz has endend');
+        }
+
+        
     }
 }
 
