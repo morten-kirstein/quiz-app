@@ -47,6 +47,8 @@ function initializeApp() {
         // Click prev
         function prevQuestion() {
 
+            //hvor er jeg i mit index
+                debugger;
                 if(currentQuestion <= 0 ){
                     alert("Dette er det første spørgsmål");                   
                 } else {
