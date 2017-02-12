@@ -46,12 +46,18 @@ function initializeApp() {
 
         // Click prev
         function prevQuestion() {
-            // Decrease currentQuestion by 1
-            currentQuestion--;
 
-             // show Question with number currentQuestion
-            var question = quizQuestions[currentQuestion];
-            showQuestion(question);
+                if(currentQuestion <= 0 ){
+                    alert("Dette er det første spørgsmål");                   
+                } else {
+               
+                 // Decrease currentQuestion by 1
+                    currentQuestion--;
+                    // show Question with number currentQuestion
+                    var question = quizQuestions[currentQuestion];
+                    showQuestion(question);
+                }
+
         }
 
         // Click next
