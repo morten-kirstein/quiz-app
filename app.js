@@ -34,6 +34,7 @@ var question = {
 
 function initializeApp() {
 
+
     //Display welcome message with question about continue
     var wantToPlay = confirm('do you want to quiz');
 
@@ -49,7 +50,27 @@ function initializeApp() {
     function initNewQuiz() {
 
         //Set questions in collection
-        var quizQuestions = [ 'Question 1', 'Question 2' , 'Question 3'];
+        var quizQuestions = [];
+
+        //Spørg firebase om der er nogle spørgsmål
+        messageRef.on('child_added', function(snapshot) {
+            quizQuestions.push(snapshot.val());
+
+            //display first question in collection
+            var firstQuestion = quizQuestions[0];
+            showQuestion(firstQuestion.title);
+
+        });
+
+
+
+
+        //Hvis der er spørgsmål
+
+        //Ellers
+
+        debugger;
+
 
         // InitializeCurrentQuestion
         var currentQuestion = 0;
@@ -60,9 +81,7 @@ function initializeApp() {
 
 
 
-        //display first question in collection
-        var firstQuestion = quizQuestions[0];
-        showQuestion(firstQuestion);
+
 
         // Show the question and update UI
         function showQuestion(questionNr){
