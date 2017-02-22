@@ -1,7 +1,41 @@
+/* global firebase */
+
+// Initialize Firebase
+var config = {
+    apiKey: 'AIzaSyAN5uyziZ2A2fUQ0D3tXV_66Le8gwAQhjk',
+    authDomain: 'quiz-app-47729.firebaseapp.com',
+    databaseURL: 'https://quiz-app-47729.firebaseio.com',
+    storageBucket: 'quiz-app-47729.appspot.com',
+    messagingSenderId: '21013765320'
+};
+firebase.initializeApp(config);
+
+var storage = firebase.storage();
+var database = firebase.database();
+
+var messageRef = database.ref('questions');
+
+var question = {
+    author: 'Martin',
+    title: 'Hvad er en kejserkåbe?',
+    correctAnswer: [{
+        title: 'Begge dele'
+    }],
+    wrongAnswers: [
+        {
+            title: 'En sommerfugl'
+        },
+        {
+            title: 'Et stykke tøj'
+        }
+    ]
+};
+
+
 function initializeApp() {
 
     //Display welcome message with question about continue
-    let wantToPlay = confirm('do you want to quiz');
+    var wantToPlay = confirm('do you want to quiz');
 
      //if user clicks ok
     if( wantToPlay ){
@@ -21,14 +55,14 @@ function initializeApp() {
         var currentQuestion = 0;
         var totalQuestions = quizQuestions.length;
 
-        var app = document.querySelector("#app");
+        var app = document.querySelector('#app');
         addButtonListeners();
 
 
-        
+
         //display first question in collection
         var firstQuestion = quizQuestions[0];
-        showQuestion(firstQuestion)
+        showQuestion(firstQuestion);
 
         // Show the question and update UI
         function showQuestion(questionNr){
@@ -39,7 +73,7 @@ function initializeApp() {
         function addButtonListeners() {
             var prevbutton = document.querySelector('.prevBtn');
             var nextbutton = document.querySelector('.nextBtn');
-    
+
             prevbutton.addEventListener('click', prevQuestion);
             nextbutton.addEventListener('click', nextQuestion);
         }
@@ -48,17 +82,16 @@ function initializeApp() {
         function prevQuestion() {
 
             //hvor er jeg i mit index
-                debugger;
-                if(currentQuestion <= 0 ){
-                    alert("Dette er det første spørgsmål");                   
-                } else {
-               
+            if(currentQuestion <= 0 ){
+                alert('Dette er det første spørgsmål');
+            } else {
+
                  // Decrease currentQuestion by 1
-                    currentQuestion--;
+                currentQuestion--;
                     // show Question with number currentQuestion
-                    var question = quizQuestions[currentQuestion];
-                    showQuestion(question);
-                }
+                var question = quizQuestions[currentQuestion];
+                showQuestion(question);
+            }
 
         }
 
@@ -68,9 +101,9 @@ function initializeApp() {
 
             if(currentQuestion < (totalQuestions - 1)){
                 currentQuestion++;
-                
+
                 var question = quizQuestions[currentQuestion];
-                
+
                 // show Question with number currentQuestion
                 showQuestion(question);
             } else {
@@ -82,13 +115,6 @@ function initializeApp() {
             alert('your quiz has endend');
         }
 
-        
+
     }
 }
-
-
-
-
-
-
-
