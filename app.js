@@ -8,14 +8,15 @@ var config = {
     storageBucket: 'quiz-app-47729.appspot.com',
     messagingSenderId: '21013765320'
 };
+
+
 firebase.initializeApp(config);
 
 var storage = firebase.storage();
 var database = firebase.database();
-
 var messageRef = database.ref('questions');
 
-var question = {
+/*var question = {
     author: 'Martin',
     title: 'Hvad er en kejserkåbe?',
     correctAnswer: [{
@@ -29,11 +30,10 @@ var question = {
             title: 'Et stykke tøj'
         }
     ]
-};
+};*/
 
 
 function initializeApp() {
-
 
     //Display welcome message with question about continue
     var wantToPlay = confirm('do you want to quiz');
@@ -63,25 +63,12 @@ function initializeApp() {
         });
 
 
-
-
-        //Hvis der er spørgsmål
-
-        //Ellers
-
-        debugger;
-
-
         // InitializeCurrentQuestion
         var currentQuestion = 0;
         var totalQuestions = quizQuestions.length;
 
         var app = document.querySelector('#app');
         addButtonListeners();
-
-
-
-
 
         // Show the question and update UI
         function showQuestion(questionNr){
@@ -133,7 +120,5 @@ function initializeApp() {
         function quizEnded() {
             alert('your quiz has endend');
         }
-
-
     }
 }
