@@ -11,6 +11,13 @@ header{
 header h1 {
     font-size: 40px;
 }
+
+.app{
+ width: 100%;
+ min-height: 350px;
+ text-align: center;
+}
+
 button{
     border:none;
     margin: 200px 0;
@@ -30,3 +37,4 @@ button:hover{
 .nextBtn{
     float: right;
 }
+

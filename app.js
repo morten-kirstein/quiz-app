@@ -1,76 +1,124 @@
+/* global firebase */
 
-   
-var quiz = [ 'quistion1', 'quistion3' , 'quistion3'];
+// Initialize Firebase
+var config = {
+    apiKey: 'AIzaSyAN5uyziZ2A2fUQ0D3tXV_66Le8gwAQhjk',
+    authDomain: 'quiz-app-47729.firebaseapp.com',
+    databaseURL: 'https://quiz-app-47729.firebaseio.com',
+    storageBucket: 'quiz-app-47729.appspot.com',
+    messagingSenderId: '21013765320'
+};
+
+
+firebase.initializeApp(config);
+
+var storage = firebase.storage();
+var database = firebase.database();
+var messageRef = database.ref('questions');
+
+/*var question = {
+    author: 'Martin',
+    title: 'Hvad er en kejserkåbe?',
+    correctAnswer: [{
+        title: 'Begge dele'
+    }],
+    wrongAnswers: [
+        {
+            title: 'En sommerfugl'
+        },
+        {
+            title: 'Et stykke tøj'
+        }
+    ]
+};*/
+
 
 function initializeApp() {
 
-   var app = document.querySelector("#app");
-   var currentQuestion = 0;
+    //Display welcome message with question about continue
+    var wantToPlay = confirm('do you want to quiz');
 
-   addButtonListeners();
-   startApplication();
+     //if user clicks ok
+    if( wantToPlay ){
+        initNewQuiz();
+    } else {
+        //show bye bye message
+        alert('bye bye');
+    }
 
-   function startApplication() {
-        let anwser = confirm('do you want to quiz');
+    //initialize new quiz
+    function initNewQuiz() {
 
-        if(anwser){
-            updateView(quiz[currentQuestion]);
-        }else{
-            alert('bye bye');
+        //Set questions in collection
+        var quizQuestions = [];
+
+        //Spørg firebase om der er nogle spørgsmål
+        messageRef.on('child_added', function(snapshot) {
+            quizQuestions.push(snapshot.val());
+
+            //display first question in collection
+            var firstQuestion = quizQuestions[0];
+            showQuestion(firstQuestion.title);
+
+        });
+
+
+        // InitializeCurrentQuestion
+        var currentQuestion = 0;
+        var totalQuestions = quizQuestions.length;
+
+        var app = document.querySelector('#app');
+        addButtonListeners();
+
+        // Show the question and update UI
+        function showQuestion(questionNr){
+            app.innerHTML = questionNr;
         }
-   }
-   
-   /**
-    * @author HM/MKI
-    * @description Adds eventlisteners to prev & next button
-    */
-   function addButtonListeners() {
-        var prevbutton = document.querySelector('.prevBtn');
-        var nextbutton = document.querySelector('.nextBtn');
-    
-        prevbutton.addEventListener('click', prev);
-        nextbutton.addEventListener('click', next);
-   }
 
+        // Add event listeners to buttons
+        function addButtonListeners() {
+            var prevbutton = document.querySelector('.prevBtn');
+            var nextbutton = document.querySelector('.nextBtn');
 
-   function updateView(viewData) {
-       app.innerHTML = viewData;
-   }
+            prevbutton.addEventListener('click', prevQuestion);
+            nextbutton.addEventListener('click', nextQuestion);
+        }
 
-   function showQuizQuestion(questionNr) {
-    return quiz[questionNr];
-   }
+        // Click prev
+        function prevQuestion() {
 
-   /**
-    *  @author HM/MKI
-    *  @description When user clicks previous button
-    */
-   function prev() {
-       debugger;
-       currentQuestion--;
-       showQuizQuestion(currentQuestion);           
-   }
+            //hvor er jeg i mit index
+            if(currentQuestion <= 0 ){
+                alert('Dette er det første spørgsmål');
+            } else {
 
-   /**
-    *  @author HM/MKI
-    *  @description When user clicks next button
-    */
-   function next() {
+                 // Decrease currentQuestion by 1
+                currentQuestion--;
+                    // show Question with number currentQuestion
+                var question = quizQuestions[currentQuestion];
+                showQuestion(question);
+            }
 
-        currentQuestion++;
-        showQuizQuestion(currentQuestion);
+        }
 
-        
-   }
+        // Click next
+        function nextQuestion() {
+            // Increase currentQuestion by 1
 
+            if(currentQuestion < (totalQuestions - 1)){
+                currentQuestion++;
 
+                var question = quizQuestions[currentQuestion];
 
+                // show Question with number currentQuestion
+                showQuestion(question);
+            } else {
+                quizEnded();
+            }
+        }
 
+        function quizEnded() {
+            alert('your quiz has endend');
+        }
+    }
 }
-
-
-
-
-
-
-
