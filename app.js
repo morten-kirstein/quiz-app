@@ -1,20 +1,17 @@
 // Initialize Firebase
-var config = {
+firebase.initializeApp({
     apiKey: 'AIzaSyAN5uyziZ2A2fUQ0D3tXV_66Le8gwAQhjk',
     authDomain: 'quiz-app-47729.firebaseapp.com',
     databaseURL: 'https://quiz-app-47729.firebaseio.com',
     storageBucket: 'quiz-app-47729.appspot.com',
     messagingSenderId: '21013765320'
-}
+})
 
-firebase.initializeApp(config);
-
-let storage = firebase.storage();
-let database = firebase.database();
-let messageRef = database.ref('questions');
+let storage = firebase.storage()
+let database = firebase.database()
+let messageRef = database.ref('questions')
 
 function initApp() {
-
     /**
      * User confirmation
      */
@@ -52,13 +49,10 @@ function initApp() {
             totalQuestions = questions.length;
 
             showQuestion(questions[currentQuestion]);
-        });
-
-        addButtonListeners();
+        })
 
         // Show the question and update UI
         function showQuestion(question) {
-
             quizTitle.innerHTML = question.title
 
             var questionTitle = question.title
@@ -79,7 +73,6 @@ function initApp() {
             quizAnwsers.innerHTML = anwserTemplate;
         }
 
-        
         /**
          * Answer template
          *
@@ -97,18 +90,8 @@ function initApp() {
             return output
         }
 
-
-        // Add event listeners to buttons
-        function addButtonListeners() {
-            var prevbutton = document.querySelector('.prevBtn');
-            var nextbutton = document.querySelector('.nextBtn');
-
-            prevbutton.addEventListener('click', prevQuestion);
-            nextbutton.addEventListener('click', nextQuestion);
-        }
-
         // Click prev
-        function prevQuestion() {
+        document.querySelector('.prevBtn').addEventListener('click', function () {
             if (currentQuestion === 0) {
                 alert('Dette er det første spørgsmål');
             } else {
@@ -116,10 +99,10 @@ function initApp() {
 
                 showQuestion(questions[currentQuestion]);
             }
-        }
+        })
 
         // Click next
-        function nextQuestion() {
+        document.querySelector('.nextBtn').addEventListener('click', function () {
             if (currentQuestion >= questions.length - 1) {
                 endQuiz()
             }
@@ -128,10 +111,13 @@ function initApp() {
 
                 showQuestion(questions[currentQuestion]);
             }
-        }
+        })
 
+        /**
+         * End quiz
+         */
         function endQuiz() {
-            alert('Your quiz has ended');
+            alert('Your quiz has ended')
         }
     }
 

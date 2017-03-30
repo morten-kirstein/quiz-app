@@ -29,13 +29,13 @@ button {
     cursor:pointer;
     font-size: 20px;
 }
-button:hover{
+button:hover {
     background-color: #555;
 }
-.prevBtn{
+.prevBtn {
     float: left;
 }
-.nextBtn{
+.nextBtn {
     float: right;
 }
 
