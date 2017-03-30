@@ -1,5 +1,3 @@
-/* global firebase */
-
 // Initialize Firebase
 var config = {
     apiKey: 'AIzaSyAN5uyziZ2A2fUQ0D3tXV_66Le8gwAQhjk',
@@ -7,75 +5,63 @@ var config = {
     databaseURL: 'https://quiz-app-47729.firebaseio.com',
     storageBucket: 'quiz-app-47729.appspot.com',
     messagingSenderId: '21013765320'
-};
-
+}
 
 firebase.initializeApp(config);
 
-var storage = firebase.storage();
-var database = firebase.database();
-var messageRef = database.ref('questions');
+let storage = firebase.storage();
+let database = firebase.database();
+let messageRef = database.ref('questions');
 
-/*var question = {
-    author: 'Martin',
-    title: 'Hvad er en kejserkåbe?',
-    correctAnswer: [{
-        title: 'Begge dele'
-    }],
-    wrongAnswers: [
-        {
-            title: 'En sommerfugl'
-        },
-        {
-            title: 'Et stykke tøj'
-        }
-    ]
-};*/
+function initApp() {
 
-
-function initializeApp() {
-
-    //Display welcome message with question about continue
-    var wantToPlay = confirm('do you want to quiz');
-
-     //if user clicks ok
-    if( wantToPlay ){
-        initNewQuiz();
+    /**
+     * User confirmation
+     */
+    if (confirm('Do you want to quiz?')) {
+        initQuiz()
     } else {
-        //show bye bye message
-        alert('bye bye');
+        alert(':(')
     }
 
-    //initialize new quiz
-    function initNewQuiz() {
+    /**
+     * initQuiz
+     */
+    function initQuiz() {
+        /**
+         * Questions
+         *
+         * @type {Array}
+         */
+        let questions = [];
 
-        //Set questions in collection
-        var quizQuestions = [];
-        var totalQuestions;
-        var currentQuestion = 0;
+        /**
+         * Current question count
+         *
+         * @type {number}
+         */
+        let currentQuestion = 0;
 
         var quizTitle = document.querySelector('#question-title');
         var quizAnwsers = document.querySelector('#question-anwsers');
 
-        //Spørg firebase om der er nogle spørgsmål
+        // Spørg firebase om der er nogle spørgsmål
         messageRef.on('child_added', function(snapshot) {
-            quizQuestions.push(snapshot.val());
+            questions.push(snapshot.val())
 
-            totalQuestions = quizQuestions.length;
+            totalQuestions = questions.length;
 
-            //display first question in collection
-            var firstQuestion = quizQuestions[0];
-            showQuestion(firstQuestion);
-
+            showQuestion(questions[currentQuestion]);
         });
 
-       
         addButtonListeners();
 
         // Show the question and update UI
-        function showQuestion(question){
+        function showQuestion(question) {
 
-            var questionTitle = question.title;
+            quizTitle.innerHTML = question.title
+
+            var questionTitle = question.title
 
             var wrongAnswers = question.wrongAnswers;
             var correctAnswers = question.correctAnswer;
@@ -83,40 +69,32 @@ function initializeApp() {
             var answersCollection = wrongAnswers.concat(correctAnswers);
             
             var answersTitles = [];
-
-
             for(var i = 0; answersCollection.length > i; i++) {
-
                 answersTitles.push(answersCollection[i].title);
-                debugger;
-            } 
-            
-            
-        
-            debugger;
-            var anwserTemplate = makeAnwserHTMLTemplate(answersTitles);
+            }
+
+            var anwserTemplate = makeAnswerHTMLTemplate(shuffle(answersTitles));
 
             quizTitle.innerHTML = questionTitle;
             quizAnwsers.innerHTML = anwserTemplate;
-           
         }
 
         
         /**
-         * 
-         * @param {*} anwserCollection 
+         * Answer template
+         *
+         * @param {*} answerCollection
          */
-        function makeAnwserHTMLTemplate(anwserCollection){
+        function makeAnswerHTMLTemplate(answerCollection) {
+            let output = ''
 
-            var title = "hello";
+            for (let i = 0; answerCollection.length > i; i++) {
+                output += '<a href="#" class="button answer">' + answerCollection[i] + '</a>'
 
-            var htmlstring = [
-                '<ul">',
-                    '<li>' + title + '</li>',
-                '</ul>'
-            ].join("\n");
+                if (i + 1 !== answerCollection.length) output += '&nbsp;'
+            }
 
-            return htmlstring;
+            return output
         }
 
 
@@ -131,39 +109,43 @@ function initializeApp() {
 
         // Click prev
         function prevQuestion() {
-
-            //hvor er jeg i mit index
-            if(currentQuestion <= 0 ){
+            if (currentQuestion === 0) {
                 alert('Dette er det første spørgsmål');
             } else {
-
-                 // Decrease currentQuestion by 1
                 currentQuestion--;
-                    // show Question with number currentQuestion
-                var question = quizQuestions[currentQuestion];
-                showQuestion(question);
-            }
 
+                showQuestion(questions[currentQuestion]);
+            }
         }
 
         // Click next
         function nextQuestion() {
-            // Increase currentQuestion by 1
-
-            if(currentQuestion < (totalQuestions - 1)){
+            if (currentQuestion >= questions.length - 1) {
+                endQuiz()
+            }
+            else {
                 currentQuestion++;
 
-                var question = quizQuestions[currentQuestion];
-
-                // show Question with number currentQuestion
-                showQuestion(question);
-            } else {
-                quizEnded();
+                showQuestion(questions[currentQuestion]);
             }
         }
 
-        function quizEnded() {
-            alert('your quiz has endend');
+        function endQuiz() {
+            alert('Your quiz has ended');
         }
+    }
+
+    /**
+     * Shuffle array
+     *
+     * @param array
+     */
+    function shuffle(array) {
+        for (let i = array.length; i; i--) {
+            let j = Math.floor(Math.random() * i);
+            [array[i - 1], array[j]] = [array[j], array[i - 1]];
+        }
+
+        return array
     }
 }
