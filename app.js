@@ -51,26 +51,51 @@ function initApp() {
             showQuestion(questions[currentQuestion]);
         })
 
+        // Selected answers
+        let selectedAnswers = [];
+
         // Show the question and update UI
         function showQuestion(question) {
             quizTitle.innerHTML = question.title
 
-            var questionTitle = question.title
-
             var wrongAnswers = question.wrongAnswers;
             var correctAnswers = question.correctAnswer;
-
             var answersCollection = wrongAnswers.concat(correctAnswers);
             
-            var answersTitles = [];
-            for(var i = 0; answersCollection.length > i; i++) {
-                answersTitles.push(answersCollection[i].title);
-            }
+            quizAnwsers.innerHTML = makeAnswerHTMLTemplate(shuffle(answersCollection.map(x => x.title)));
 
-            var anwserTemplate = makeAnswerHTMLTemplate(shuffle(answersTitles));
+            let answerNodes = getAnswerNodes();
 
-            quizTitle.innerHTML = questionTitle;
-            quizAnwsers.innerHTML = anwserTemplate;
+            answerNodes.map((e, i) => {
+                e.addEventListener('click', () => {
+                    let isSelected = e.classList.contains('selected');
+                    answerNodes.forEach((e) => e.classList.remove('selected'));
+
+                    if (isSelected) {
+                        e.classList.remove('selected');
+
+                        selectedAnswers[currentQuestion] = null;
+                    } else {
+                        e.classList.add('selected');
+
+                        selectedAnswers[currentQuestion] = correctAnswers.some((a) => {
+                            return a.title === e.innerText;
+                        });
+                    }
+                });
+            });
+        }
+
+        function getAnswerNodes() {
+            return Array.prototype.slice.call(document.querySelectorAll('a.button.answer'));
+        }
+
+        /**
+         * Returns the selected answer
+         */
+        function getSelectedAnswer() {
+            let selected = getAnswerNodes().filter((e) => e.classList.contains('selected'));
+            return selected.length > 0 ? selected[0].innerText : null;
         }
 
         /**
@@ -103,12 +128,12 @@ function initApp() {
 
         // Click next
         document.querySelector('.nextBtn').addEventListener('click', function () {
+
             if (currentQuestion >= questions.length - 1) {
                 endQuiz()
             }
             else {
                 currentQuestion++;
-
                 showQuestion(questions[currentQuestion]);
             }
         })
@@ -117,7 +142,8 @@ function initApp() {
          * End quiz
          */
         function endQuiz() {
-            alert('Your quiz has ended')
+            let numberOfCorrectSelected = selectedAnswers.filter((a) => a).length;
+            alert('Your quiz has ended\nScore: ' + numberOfCorrectSelected + '/' + questions.length); 
         }
     }
 
